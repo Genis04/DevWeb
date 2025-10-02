@@ -120,11 +120,16 @@ Te contactaremos en las próximas 24 horas para activar tu enlace temporal.`);
           </p>
         </div>
         
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
           {/* Left side - Info and features */}
           <div className="space-y-8">
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-              {mockData.rentalService.features.map((feature, index) => {
+              {[
+                "Configuración en 24 horas",
+                "Diseño adaptable a tu marca", 
+                "Dominio personalizado disponible",
+                "Gestión de contenido fácil"
+              ].map((feature, index) => {
                 const icons = [Clock, Palette, Globe, Zap];
                 const IconComponent = icons[index];
                 const colors = ['blue', 'purple', 'green', 'orange'];
