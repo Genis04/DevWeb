@@ -168,55 +168,148 @@ Te contactaremos en las próximas 24 horas para activar tu enlace temporal.`);
             </div>
           </div>
           
-          {/* Right side - Pricing cards */}
+          {/* Right side - Pricing cards or form */}
           <div className="space-y-6">
-            <h3 className="text-2xl font-bold text-gray-900 text-center mb-8">Elige tu Plan Temporal</h3>
-            
-            <div className="space-y-4">
-              {mockData.rentalService.durations.map((plan, index) => (
-                <Card 
-                  key={index} 
-                  className={`group cursor-pointer transition-all duration-300 transform hover:-translate-y-1 ${
-                    plan.popular 
-                      ? 'ring-2 ring-purple-500 shadow-2xl scale-105' 
-                      : 'hover:shadow-xl'
-                  }`}
-                >
-                  <CardHeader className="relative">
-                    {plan.popular && (
-                      <Badge className="absolute -top-3 left-1/2 transform -translate-x-1/2 bg-purple-600 text-white px-4 py-1">
-                        <Star className="w-3 h-3 mr-1" />
-                        Más Popular
-                      </Badge>
-                    )}
-                    <div className="flex justify-between items-center">
-                      <div>
-                        <CardTitle className="text-xl font-bold">{plan.period}</CardTitle>
-                        <CardDescription>Acceso completo durante todo el período</CardDescription>
-                      </div>
-                      <div className="text-right">
-                        <div className="text-3xl font-bold text-purple-600">{plan.price}</div>
-                        <div className="text-sm text-gray-500">pago único</div>
-                      </div>
-                    </div>
-                  </CardHeader>
-                  
-                  <CardContent>
-                    <Button 
-                      onClick={() => handleRentRequest(plan.period, plan.price)}
-                      className={`w-full transition-all duration-300 ${
-                        plan.popular
-                          ? 'bg-purple-600 hover:bg-purple-700 text-white shadow-lg'
-                          : 'bg-gray-100 hover:bg-purple-600 text-gray-700 hover:text-white'
+            {!showForm ? (
+              <>
+                <h3 className="text-2xl font-bold text-gray-900 text-center mb-8">Elige tu Plan Temporal</h3>
+                
+                <div className="space-y-4">
+                  {durations.map((plan, index) => (
+                    <Card 
+                      key={index} 
+                      className={`group cursor-pointer transition-all duration-300 transform hover:-translate-y-1 ${
+                        plan.popular 
+                          ? 'ring-2 ring-purple-500 shadow-2xl scale-105' 
+                          : 'hover:shadow-xl'
                       }`}
                     >
-                      Solicitar {plan.period}
-                      <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
+                      <CardHeader className="relative">
+                        {plan.popular && (
+                          <Badge className="absolute -top-3 left-1/2 transform -translate-x-1/2 bg-purple-600 text-white px-4 py-1">
+                            <Star className="w-3 h-3 mr-1" />
+                            Más Popular
+                          </Badge>
+                        )}
+                        <div className="flex justify-between items-center">
+                          <div>
+                            <CardTitle className="text-xl font-bold">{plan.period}</CardTitle>
+                            <CardDescription>Acceso completo durante todo el período</CardDescription>
+                          </div>
+                          <div className="text-right">
+                            <div className="text-3xl font-bold text-purple-600">{plan.price}</div>
+                            <div className="text-sm text-gray-500">pago único</div>
+                          </div>
+                        </div>
+                      </CardHeader>
+                      
+                      <CardContent>
+                        <Button 
+                          onClick={() => handleDurationSelect(plan.period, plan.price)}
+                          className={`w-full transition-all duration-300 ${
+                            plan.popular
+                              ? 'bg-purple-600 hover:bg-purple-700 text-white shadow-lg'
+                              : 'bg-gray-100 hover:bg-purple-600 text-gray-700 hover:text-white'
+                          }`}
+                        >
+                          Solicitar {plan.period}
+                          <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
+                        </Button>
+                      </CardContent>
+                    </Card>
+                  ))}
+                </div>
+              </>
+            ) : (
+              /* Rental Request Form */
+              <Card className="p-6">
+                <CardHeader className="pb-4">
+                  <CardTitle className="text-xl font-bold">Solicitud de Alquiler - {selectedDuration}</CardTitle>
+                  <CardDescription>
+                    Completa los datos para solicitar tu enlace temporal
+                  </CardDescription>
+                </CardHeader>
+                
+                <form onSubmit={handleSubmitRequest} className="space-y-4">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                      <Label htmlFor="businessName">Nombre del Negocio *</Label>
+                      <div className="relative">
+                        <Building className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
+                        <Input
+                          id="businessName"
+                          required
+                          value={formData.businessName}
+                          onChange={(e) => handleInputChange('businessName', e.target.value)}
+                          className="pl-10"
+                          placeholder="Mi Empresa S.L."
+                        />
+                      </div>
+                    </div>
+                    
+                    <div>
+                      <Label htmlFor="contactPhone">Teléfono *</Label>
+                      <div className="relative">
+                        <Phone className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
+                        <Input
+                          id="contactPhone"
+                          required
+                          value={formData.contactPhone}
+                          onChange={(e) => handleInputChange('contactPhone', e.target.value)}
+                          className="pl-10"
+                          placeholder="+52 55 1234 5678"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div>
+                    <Label htmlFor="contactEmail">Email de Contacto *</Label>
+                    <div className="relative">
+                      <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
+                      <Input
+                        id="contactEmail"
+                        type="email"
+                        required
+                        value={formData.contactEmail}
+                        onChange={(e) => handleInputChange('contactEmail', e.target.value)}
+                        className="pl-10"
+                        placeholder="contacto@miempresa.com"
+                      />
+                    </div>
+                  </div>
+                  
+                  <div>
+                    <Label htmlFor="description">Descripción del Negocio</Label>
+                    <Textarea
+                      id="description"
+                      value={formData.businessData.description}
+                      onChange={(e) => handleInputChange('businessData.description', e.target.value)}
+                      placeholder="Describe brevemente tu negocio y los servicios que ofreces..."
+                      rows="3"
+                    />
+                  </div>
+                  
+                  <div className="flex space-x-4">
+                    <Button
+                      type="button"
+                      variant="outline"
+                      onClick={() => setShowForm(false)}
+                      className="flex-1"
+                    >
+                      Cancelar
                     </Button>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
+                    <Button
+                      type="submit"
+                      disabled={loading}
+                      className="flex-1 bg-purple-600 hover:bg-purple-700 text-white"
+                    >
+                      {loading ? 'Enviando...' : 'Enviar Solicitud'}
+                    </Button>
+                  </div>
+                </form>
+              </Card>
+            )}
             
             {/* Additional info */}
             <div className="bg-blue-50 rounded-2xl p-6 text-center">
