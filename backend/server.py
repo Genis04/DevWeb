@@ -331,6 +331,25 @@ logging.basicConfig(
 )
 logger = logging.getLogger(__name__)
 
+# Background task for cleanup
+async def periodic_cleanup():
+    """Periodic cleanup of expired rentals"""
+    while True:
+        try:
+            await cleanup_expired_rentals()
+            # Run cleanup every hour
+            await asyncio.sleep(3600)
+        except Exception as e:
+            logger.error(f"Error in periodic cleanup: {e}")
+            await asyncio.sleep(3600)
+
+@app.on_event("startup")
+async def startup_event():
+    """Start background tasks"""
+    # Start periodic cleanup task
+    asyncio.create_task(periodic_cleanup())
+    logger.info("Started background cleanup task")
+
 @app.on_event("shutdown")
 async def shutdown_db_client():
     client.close()
