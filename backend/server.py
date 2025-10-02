@@ -36,6 +36,53 @@ class StatusCheck(BaseModel):
 class StatusCheckCreate(BaseModel):
     client_name: str
 
+# Rental System Models
+class BusinessData(BaseModel):
+    description: Optional[str] = ""
+    services: List[str] = []
+    logo: Optional[str] = ""
+    theme: str = "blue"
+    socialLinks: Dict[str, str] = {}
+
+class RentalRequestCreate(BaseModel):
+    businessName: str
+    contactEmail: str
+    contactPhone: str
+    duration: str  # "1 week", "1 month", "3 months"
+    businessData: BusinessData
+
+class RentalRequest(BaseModel):
+    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
+    businessName: str
+    contactEmail: str
+    contactPhone: str
+    duration: str
+    durationType: str
+    durationValue: int
+    price: str
+    status: str = "pending"
+    requestDate: datetime = Field(default_factory=datetime.utcnow)
+    approvalDate: Optional[datetime] = None
+    expirationDate: Optional[datetime] = None
+    uniqueSlug: str = Field(default_factory=lambda: str(uuid.uuid4())[:8])
+    businessData: BusinessData
+    createdAt: datetime = Field(default_factory=datetime.utcnow)
+    updatedAt: datetime = Field(default_factory=datetime.utcnow)
+
+class ActiveRental(BaseModel):
+    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
+    rentalRequestId: str
+    slug: str
+    businessName: str
+    businessData: BusinessData
+    expirationDate: datetime
+    isActive: bool = True
+    createdAt: datetime = Field(default_factory=datetime.utcnow)
+    lastAccessed: datetime = Field(default_factory=datetime.utcnow)
+
+class ApprovalRequest(BaseModel):
+    approved: bool
+
 # Add your routes to the router instead of directly to app
 @api_router.get("/")
 async def root():
