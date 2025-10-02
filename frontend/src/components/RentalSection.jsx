@@ -2,9 +2,14 @@ import React, { useState } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from './ui/card';
 import { Badge } from './ui/badge';
 import { Button } from './ui/button';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from './ui/tabs';
-import { Clock, Zap, Palette, Globe, ArrowRight, Star, CheckCircle } from 'lucide-react';
-import { mockData } from '../mock';
+import { Input } from './ui/input';
+import { Textarea } from './ui/textarea';
+import { Label } from './ui/label';
+import { Clock, Zap, Palette, Globe, ArrowRight, Star, CheckCircle, Phone, Mail, User, Building } from 'lucide-react';
+import axios from 'axios';
+
+const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
+const API = `${BACKEND_URL}/api`;
 
 export const RentalSection = () => {
   const [selectedDuration, setSelectedDuration] = useState('1 mes');
