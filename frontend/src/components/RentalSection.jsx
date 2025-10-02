@@ -13,10 +13,94 @@ const API = `${BACKEND_URL}/api`;
 
 export const RentalSection = () => {
   const [selectedDuration, setSelectedDuration] = useState('1 mes');
+  const [showForm, setShowForm] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [formData, setFormData] = useState({
+    businessName: '',
+    contactEmail: '',
+    contactPhone: '',
+    duration: '1 mes',
+    businessData: {
+      description: '',
+      services: [],
+      theme: 'blue',
+      socialLinks: {}
+    }
+  });
   
-  const handleRentRequest = (duration, price) => {
-    // Mock rental request
-    alert(`¡Solicitud enviada! Duración: ${duration} - Precio: ${price}. Te contactaremos pronto para procesar tu solicitud.`);
+  const durations = [
+    { period: "1 semana", price: "$150", popular: false },
+    { period: "1 mes", price: "$400", popular: true },
+    { period: "3 meses", price: "$1000", popular: false }
+  ];
+  
+  const handleDurationSelect = (duration, price) => {
+    setSelectedDuration(duration);
+    setFormData(prev => ({ ...prev, duration }));
+    setShowForm(true);
+  };
+  
+  const handleInputChange = (field, value) => {
+    if (field.startsWith('businessData.')) {
+      const businessField = field.split('.')[1];
+      setFormData(prev => ({
+        ...prev,
+        businessData: {
+          ...prev.businessData,
+          [businessField]: value
+        }
+      }));
+    } else {
+      setFormData(prev => ({ ...prev, [field]: value }));
+    }
+  };
+  
+  const handleSubmitRequest = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    
+    try {
+      // Process services string to array
+      const processedData = {
+        ...formData,
+        businessData: {
+          ...formData.businessData,
+          services: formData.businessData.services || []
+        }
+      };
+      
+      const response = await axios.post(`${API}/rental-requests`, processedData);
+      
+      alert(`¡Solicitud enviada exitosamente! 
+      
+Hemos recibido tu solicitud para "${formData.businessName}".
+ID de solicitud: ${response.data.id}
+Duración: ${formData.duration}
+Precio: ${durations.find(d => d.period === formData.duration)?.price}
+
+Te contactaremos en las próximas 24 horas para activar tu enlace temporal.`);
+      
+      // Reset form
+      setFormData({
+        businessName: '',
+        contactEmail: '',
+        contactPhone: '',
+        duration: '1 mes',
+        businessData: {
+          description: '',
+          services: [],
+          theme: 'blue',
+          socialLinks: {}
+        }
+      });
+      setShowForm(false);
+      
+    } catch (error) {
+      console.error('Error submitting rental request:', error);
+      alert('Error al enviar la solicitud. Por favor, inténtalo de nuevo.');
+    } finally {
+      setLoading(false);
+    }
   };
   
   return (
