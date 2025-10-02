@@ -46,9 +46,8 @@ function App() {
     <div className="App">
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<Home />}>
-            <Route index element={<Home />} />
-          </Route>
+          <Route path="/" element={<Home />} />
+          <Route path="/rental/:slug" element={<TemporalSite />} />
         </Routes>
       </BrowserRouter>
     </div>
