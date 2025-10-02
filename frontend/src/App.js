@@ -8,6 +8,7 @@ import { ServicesSection } from "./components/ServicesSection";
 import { RentalSection } from "./components/RentalSection";
 import { TestimonialsSection } from "./components/TestimonialsSection";
 import { Footer } from "./components/Footer";
+import { TemporalSite } from "./components/TemporalSite";
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 const API = `${BACKEND_URL}/api`;
