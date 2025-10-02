@@ -112,10 +112,11 @@ Te contactaremos en las próximas 24 horas para activar tu enlace temporal.`);
             ⚡ Servicio Exclusivo
           </Badge>
           <h2 className="text-4xl lg:text-5xl font-bold text-gray-900 mb-6">
-            {mockData.rentalService.title}
+            Alquiler de Enlaces Temporales
           </h2>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto mb-8">
-            {mockData.rentalService.description}
+            Obtén una presencia web inmediata con nuestro servicio de enlaces temporales. 
+            Ideal para eventos, promociones o lanzamientos.
           </p>
         </div>
         
