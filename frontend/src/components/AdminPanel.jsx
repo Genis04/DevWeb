@@ -117,7 +117,7 @@ export const AdminPanel = () => {
           <TabsContent value="requests" className="space-y-4">
             <div className="flex justify-between items-center">
               <h2 className="text-2xl font-bold">Solicitudes de Alquiler</h2>
-              <Button onClick={fetchData} variant=\"outline\">
+              <Button onClick={fetchData} variant="outline">
                 Actualizar
               </Button>
             </div>
